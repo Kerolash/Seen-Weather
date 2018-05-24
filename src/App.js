@@ -113,175 +113,172 @@ componentDidMount()
     if(city !== 0)  //при условии наличия данных
     {   return (    //выводим
         <div>
-        <Navbar>
-    <Navbar.Header>
-      <h1>Погода</h1>
-    </Navbar.Header>
-  </Navbar>
-  
-               
-        <Grid>
-    <Row><Col md={4} sm={4}>
-            <h3>Select a city</h3>
-            <Nav  bsStyle="pills"
-          stacked> 
-          <p>
-                        {CitysButton.map                                             //создаем кнопки по названиям городов, которые сохранены
-                        ((City, id) => 
-                            (       
-                                    <NavItem 
-                                        key ={id}
-                                        onClick={() =>                          //когда кнопка будет нажата
-                                            {   
-                                                if(del === 0)                   //если обработка вызвана НЕ удалением
-                                                {
-                                                    Lat=City.Lat;                   //принимаем координаты сохраненного города за текущие
-                                                    city=City.city;                 //принимаем название сохраненного города за текущее
-                                                    Lon=City.Lon;                   //принимаем координаты сохраненного города за текущие
-                                                    fetch(WALink+Lat+'+'+Lon).then(res => res.json()).then(json => {                                                //используя координаты, отправляем запрос на api, что бы получить погоду по местонахождению
-                                                        this.setState({ weatherData: json });                                                                       //разбираем полученный json на нужные куски
-                                                        const weatherCurrent = this.state.weatherData.current;                                                      //разбираем полученный json на нужные куски
-                                                        const weatherLocation = this.state.weatherData.location;                                                    //разбираем полученный json на нужные куски
-                                                        PARametrs (weatherCurrent,weatherLocation);                                                                 //разбираем полученный json на нужные куски
-                                                        this.setState({wind_dir, wind_kph, humidity, temp_c,feelslike_c,pressure_mb,Lat,Lon,Icon,name,city});       //не знаю почему, но без этого не работает
-                                                        ConsolLog ();                                                                                               //выводим данные погоды и локации для сверки
-                                                    });
+            <Navbar>
+                <Navbar.Header>
+                    <h1>Погода</h1>
+                </Navbar.Header>
+            </Navbar>
+            <Grid>
+                <Row>
+                    <Col md={4} sm={4}>
+                        <h3>Select a city</h3>
+                        <Nav  bsStyle="pills" stacked> 
+                            <p>
+                                {CitysButton.map                                             //создаем кнопки по названиям городов, которые сохранены
+                                    ((City, id) => 
+                                        (       
+                                                <NavItem 
+                                                    key ={id}
+                                                    onClick={() =>                          //когда кнопка будет нажата
+                                                        {   
+                                                            if(del === 0)                   //если обработка вызвана НЕ удалением
+                                                            {
+                                                                Lat=City.Lat;                   //принимаем координаты сохраненного города за текущие
+                                                                city=City.city;                 //принимаем название сохраненного города за текущее
+                                                                Lon=City.Lon;                   //принимаем координаты сохраненного города за текущие
+                                                                fetch(WALink+Lat+'+'+Lon).then(res => res.json()).then(json => {                                                //используя координаты, отправляем запрос на api, что бы получить погоду по местонахождению
+                                                                    this.setState({ weatherData: json });                                                                       //разбираем полученный json на нужные куски
+                                                                    const weatherCurrent = this.state.weatherData.current;                                                      //разбираем полученный json на нужные куски
+                                                                    const weatherLocation = this.state.weatherData.location;                                                    //разбираем полученный json на нужные куски
+                                                                    PARametrs (weatherCurrent,weatherLocation);                                                                 //разбираем полученный json на нужные куски
+                                                                    this.setState({wind_dir, wind_kph, humidity, temp_c,feelslike_c,pressure_mb,Lat,Lon,Icon,name,city});       //не знаю почему, но без этого не работает
+                                                                    ConsolLog ();                                                                                               //выводим данные погоды и локации для сверки
+                                                                });
+                                                            }
+                                                            else                            //если обработка вызвана удалением
+                                                            {
+                                                                Lat=CitysButton[0].Lat;                   //принимаем координаты сохраненного города за текущие
+                                                                city=CitysButton[0].city;                 //принимаем название сохраненного города за текущее
+                                                                Lon=CitysButton[0].Lon;                   //принимаем координаты сохраненного города за текущие
+                                                                fetch(WALink+Lat+'+'+Lon).then(res => res.json()).then(json => {                                                //используя координаты, отправляем запрос на api, что бы получить погоду по местонахождению
+                                                                    this.setState({ weatherData: json });                                                                       //разбираем полученный json на нужные куски
+                                                                const weatherCurrent = this.state.weatherData.current;                                                      //разбираем полученный json на нужные куски
+                                                                const weatherLocation = this.state.weatherData.location;                                                    //разбираем полученный json на нужные куски
+                                                                PARametrs (weatherCurrent,weatherLocation);                                                                 //разбираем полученный json на нужные куски
+                                                                this.setState({wind_dir, wind_kph, humidity, temp_c,feelslike_c,pressure_mb,Lat,Lon,Icon,name,city});       //не знаю почему, но без этого не работает
+                                                                ConsolLog ();                                                                                               //выводим данные погоды и локации для сверки
+                                                                });
+                                                                del=0;
+                                                            }
+                                                        }
+                                                    }
+                                                >
+                                                <button onClick={() =>
+                                                    {
+                                                        var j =0;
+                                                        var i =0;
+                                                        for (; i<Citys.length; i++)                              //проходя по всему массиву городов
+                                                        {console.log(Citys[i].city)
+                                                         if(Citys[i].city===City.city)                          //находим запись города относящуюся к кнопке
+                                                         {
+                                                             j=i;                                               //запоминаем ID
+                                                         }
+                                                        }
+                                                        CitysButton=[{}];
+                                                        for (i = 0; i < Citys.length; i++)                      //перезаписываем массив объекток, откуда берем города для кнопок
+                                                        {          
+                                                            if(i<j){CitysButton[i] = Citys[i];}                 //пропуская тот, который удаляем
+                                                            if(i>j){CitysButton[i-1] = Citys[i];}
+                                                        }
+                                                        var CitysSave = JSON.stringify(CitysButton);              //делаем json из массива
+                                                        localStorage.setItem('CitysSave', CitysSave);       //сохраняем json в localStorage
+                                                        del=1;                                              //метка сработавшего удаления
+                                                    }
                                                 }
-                                                else                            //если обработка вызвана удалением
-                                                {
-                                                    Lat=CitysButton[0].Lat;                   //принимаем координаты сохраненного города за текущие
-                                                    city=CitysButton[0].city;                 //принимаем название сохраненного города за текущее
-                                                    Lon=CitysButton[0].Lon;                   //принимаем координаты сохраненного города за текущие
-                                                    fetch(WALink+Lat+'+'+Lon).then(res => res.json()).then(json => {                                                //используя координаты, отправляем запрос на api, что бы получить погоду по местонахождению
-                                                        this.setState({ weatherData: json });                                                                       //разбираем полученный json на нужные куски
-                                                    const weatherCurrent = this.state.weatherData.current;                                                      //разбираем полученный json на нужные куски
-                                                    const weatherLocation = this.state.weatherData.location;                                                    //разбираем полученный json на нужные куски
-                                                    PARametrs (weatherCurrent,weatherLocation);                                                                 //разбираем полученный json на нужные куски
-                                                    this.setState({wind_dir, wind_kph, humidity, temp_c,feelslike_c,pressure_mb,Lat,Lon,Icon,name,city});       //не знаю почему, но без этого не работает
-                                                    ConsolLog ();                                                                                               //выводим данные погоды и локации для сверки
-                                                    });
-                                                    del=0;
-                                                }
-                                            }
-                                        }
-                                    >
-                                    <button onClick={() =>
-                                        {
-                                            var j =0;
-                                            var i =0;
-                                            for (; i<Citys.length; i++)                              //проходя по всему массиву городов
-                                            {console.log(Citys[i].city)
-                                             if(Citys[i].city===City.city)                          //находим запись города относящуюся к кнопке
-                                             {
-                                                 j=i;                                               //запоминаем ID
-                                             }
-                                            }
-                                            CitysButton=[{}];
-                                            for (i = 0; i < Citys.length; i++)                      //перезаписываем массив объекток, откуда берем города для кнопок
-                                            {          
-                                                if(i<j){CitysButton[i] = Citys[i];}                 //пропуская тот, который удаляем
-                                                if(i>j){CitysButton[i-1] = Citys[i];}
-                                            }
-                                            var CitysSave = JSON.stringify(CitysButton);              //делаем json из массива
-                                            localStorage.setItem('CitysSave', CitysSave);       //сохраняем json в localStorage
-                                            del=1;                                              //метка сработавшего удаления
-                                        }
-                                    }
-                                    >
-                                    -
-                                    </button>
-                                    {City.city} {/*выводим название города, соответствующего кнопке*/}
-                                    
-                                    </NavItem> 
-                                    
-                            )
-                        )
-                }</p>
-               
-               </Nav> 
-                
-            <input type="text" id="txt" onChange={() =>{a_value=document.getElementById("txt").value;}}/> {/*поле ввода города*/}
-                <button onClick={() =>
-                {fetch(MALink+a_value).then(res => res.json()).then(json => {   //получаем геоданные по названию города
-                    this.setState({ geocity: json });                           //разбираем полученный json на нужные куски
-                    const GEOCITY = this.state.geocity;                         //разбираем полученный json на нужные куски
-                    for (var i = 0; i < GEOCITY.results.length; i++) {          //разбираем полученный json на нужные куски
-                        myAddress[i] = GEOCITY.results[i].address_components; } //разбираем полученный json на нужные куски
-                    city =a_value;                                              //изменяем название отображаемого города
-                    this.setState({city: city});                                //не знаю почему, но без этого не работает
-                    
-                    for (i = 0; i < GEOCITY.results.length; i++) {              //разбираем полученный json на нужные куски
-                        myGeo[i] = GEOCITY.results[i].geometry.location; }      //разбираем полученный json на нужные куски    
-                    Lat = myGeo[0].lat;                                         //получаем координату города
-                    Lon = myGeo[0].lng;                                         //получаем координату города
-                    this.setState({Lat: Lat});                                  //не знаю почему, но без этого не работает
-                    this.setState({Lon: Lon});                                  //не знаю почему, но без этого не работает
+                                                >
+                                                -
+                                                </button>
+                                                {City.city} {/*выводим название города, соответствующего кнопке*/}
 
-                    HomeLand["city"]=city;                                      //сохраняем название города в объект
-                    HomeLand["Lat"]=Lat;                                        //сохраняем координату города в объект
-                    HomeLand["Lon"]=Lon;                                        //сохраняем координату города в объект
-                    for (i=0; i<Citys.length; i++)                              //проходя по всему массиву городов
-                        {
-                            var er =0;
-                            if (Citys[i].city === HomeLand.city)                //проверяем, нет ли уже такого
-                                {
-                                    er=1;
+                                                </NavItem> 
+
+                                        )
+                                    )
                                 }
-                        }
-                        if (er===0)                                             //если такого еще нет
-                        {
-                            Citys.push(HomeLand);                               //записываем объект в массив, что бы делать кнопки по названиям
-                            var CitysSave = JSON.stringify(Citys);              //делаем json из массива
-                            localStorage.setItem('CitysSave', CitysSave);       //сохраняем json в localStorage
-                            Citys = JSON.parse(localStorage.getItem("CitysSave"));     //перезаписываем объект из сохраненного json-a (без этого не работало)
-                            for (i = 0; i < Citys.length; i++) {                //проходим по всему объекту
-                                CitysButton[i] = Citys[i];                      //записывая все в объект для выведения кнопок (без этого не работало
-                            }
-                            this.setState({CitysButton:CitysButton});           //не знаю почему, но без этого не работает
-                            
-                        }     
-                    fetch(WALink+Lat+'+'+Lon).then(res => res.json()).then(json => {                                                //используя координаты, отправляем запрос на api, что бы получить погоду по местонахождению
-                        this.setState({ weatherData: json });                                                                       //разбираем полученный json на нужные куски
-                        const weatherCurrent = this.state.weatherData.current;                                                      //разбираем полученный json на нужные куски
-                        const weatherLocation = this.state.weatherData.location;                                                    //разбираем полученный json на нужные куски
-                        PARametrs (weatherCurrent,weatherLocation);                                                                 //разбираем полученный json на нужные куски
-                        this.setState({wind_dir, wind_kph, humidity, temp_c,feelslike_c,pressure_mb,Lat,Lon,Icon,name,city});       //не знаю почему, но без этого не работает
-                        ConsolLog ();                                                                                               //выводим данные погоды и локации для сверки
-                    });
-                });
-                document.getElementById("txt").value='';}}                      //отчищаем поле ввода названия города
-                >
-                Add
-                </button>
-                <p><button
-                    onClick={() => 
-                        {   
-                            localStorage.clear()                                /*создаем кнопку, нажатием на которую отчищается LocalStorage*/
-                        }
-                    }
-                >
-                reset/сброс
-                </button></p>        
-                        </Col>
-               <Col md={8} sm={8}>
-               <h1>{/*выводим погоду и название города, которые сейчас отображаются, а так же рисунок*/}
-                    {name} in {city} 
-                    <img src={Icon} alt={name} />
-                </h1>
-                <p>Current temp / Текущая температура: {temp_c} C°</p>          {/*выводим текущую темературу*/}
-                <p>Feels / Ощущается: {feelslike_c} C°</p>                      {/*выводим темературу, которая ощущается*/}
-                <p>Pressure / Давление: {pressure_mb}</p>                       {/*выводим текущее давление*/}
-                <p>Wind Direction / Направление ветра: {wind_dir}</p>           {/*выводим направление ветра в формате Nord-West = NW*/}
-                <p>Wind Speed / Скорость ветра: {wind_mps} m/sec</p>            {/*выводим скорость ветра в м/с*/}
-                <p>Humidity / Влажность: {humidity}</p>                         {/*выводим текущую влажность*/}
-                </Col>
-    </Row>
-  </Grid>
-                
+                            </p>
+                        </Nav>   
+                        <input type="text" id="txt" onChange={() =>{a_value=document.getElementById("txt").value;}}/> {/*поле ввода города*/}
+                            <button onClick={() =>
+                            {fetch(MALink+a_value).then(res => res.json()).then(json => {   //получаем геоданные по названию города
+                                this.setState({ geocity: json });                           //разбираем полученный json на нужные куски
+                                const GEOCITY = this.state.geocity;                         //разбираем полученный json на нужные куски
+                                for (var i = 0; i < GEOCITY.results.length; i++) {          //разбираем полученный json на нужные куски
+                                    myAddress[i] = GEOCITY.results[i].address_components; } //разбираем полученный json на нужные куски
+                                city =a_value;                                              //изменяем название отображаемого города
+                                this.setState({city: city});                                //не знаю почему, но без этого не работает
+
+                                for (i = 0; i < GEOCITY.results.length; i++) {              //разбираем полученный json на нужные куски
+                                    myGeo[i] = GEOCITY.results[i].geometry.location; }      //разбираем полученный json на нужные куски    
+                                Lat = myGeo[0].lat;                                         //получаем координату города
+                                Lon = myGeo[0].lng;                                         //получаем координату города
+                                this.setState({Lat: Lat});                                  //не знаю почему, но без этого не работает
+                                this.setState({Lon: Lon});                                  //не знаю почему, но без этого не работает
+
+                                HomeLand["city"]=city;                                      //сохраняем название города в объект
+                                HomeLand["Lat"]=Lat;                                        //сохраняем координату города в объект
+                                HomeLand["Lon"]=Lon;                                        //сохраняем координату города в объект
+                                for (i=0; i<Citys.length; i++)                              //проходя по всему массиву городов
+                                    {
+                                        var er =0;
+                                        if (Citys[i].city === HomeLand.city)                //проверяем, нет ли уже такого
+                                            {
+                                                er=1;
+                                            }
+                                    }
+                                    if (er===0)                                             //если такого еще нет
+                                    {
+                                        Citys.push(HomeLand);                               //записываем объект в массив, что бы делать кнопки по названиям
+                                        var CitysSave = JSON.stringify(Citys);              //делаем json из массива
+                                        localStorage.setItem('CitysSave', CitysSave);       //сохраняем json в localStorage
+                                        Citys = JSON.parse(localStorage.getItem("CitysSave"));     //перезаписываем объект из сохраненного json-a (без этого не работало)
+                                        for (i = 0; i < Citys.length; i++) {                //проходим по всему объекту
+                                            CitysButton[i] = Citys[i];                      //записывая все в объект для выведения кнопок (без этого не работало
+                                        }
+                                        this.setState({CitysButton:CitysButton});           //не знаю почему, но без этого не работает
+
+                                    }     
+                                fetch(WALink+Lat+'+'+Lon).then(res => res.json()).then(json => {                                                //используя координаты, отправляем запрос на api, что бы получить погоду по местонахождению
+                                    this.setState({ weatherData: json });                                                                       //разбираем полученный json на нужные куски
+                                    const weatherCurrent = this.state.weatherData.current;                                                      //разбираем полученный json на нужные куски
+                                    const weatherLocation = this.state.weatherData.location;                                                    //разбираем полученный json на нужные куски
+                                    PARametrs (weatherCurrent,weatherLocation);                                                                 //разбираем полученный json на нужные куски
+                                    this.setState({wind_dir, wind_kph, humidity, temp_c,feelslike_c,pressure_mb,Lat,Lon,Icon,name,city});       //не знаю почему, но без этого не работает
+                                    ConsolLog ();                                                                                               //выводим данные погоды и локации для сверки
+                                });
+                            });
+                            document.getElementById("txt").value='';}}                      //отчищаем поле ввода названия города
+                            >
+                            Add
+                            </button>
+                            <p><button
+                                onClick={() => 
+                                    {   
+                                        localStorage.clear()                                /*создаем кнопку, нажатием на которую отчищается LocalStorage*/
+                                    }
+                                }
+                            >
+                            reset/сброс
+                            </button></p>        
+                                    </Col>
+                           <Col md={8} sm={8}>
+                           <h1>{/*выводим погоду и название города, которые сейчас отображаются, а так же рисунок*/}
+                                {name} in {city} 
+                                <img src={Icon} alt={name} />
+                            </h1>
+                            <p>Current temp / Текущая температура: {temp_c} C°</p>          {/*выводим текущую темературу*/}
+                            <p>Feels / Ощущается: {feelslike_c} C°</p>                      {/*выводим темературу, которая ощущается*/}
+                            <p>Pressure / Давление: {pressure_mb}</p>                       {/*выводим текущее давление*/}
+                            <p>Wind Direction / Направление ветра: {wind_dir}</p>           {/*выводим направление ветра в формате Nord-West = NW*/}
+                            <p>Wind Speed / Скорость ветра: {wind_mps} m/sec</p>            {/*выводим скорость ветра в м/с*/}
+                            <p>Humidity / Влажность: {humidity}</p>                         {/*выводим текущую влажность*/}
+                    </Col>
+                </Row>
+            </Grid>
         </div>
         )
     }
-    else{return(<div className="App"><h1>Loading</h1></div>)}                   {/*если данных нет, выводим "Загрузка"*/}
+    else{
+    return(<div className="App"><h1>Loading</h1></div>)}                        {/*если данных нет, выводим "Загрузка"*/}
         
   }
   }
